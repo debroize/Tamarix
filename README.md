@@ -20,6 +20,7 @@ Aufnahme von Tamarisken und Untersuchungs des Verbreitungsmusters anhand untersc
 - [ ] Korrelationsplots mit auffälligen Attributen
 - [ ] Höhenmodell bestellen
 - [ ] Bilder für Bericht hochladen
+- [ ] Mail an Egger (DGM & historische Aufnahmen)
 
 
 ### Bericht

@@ -12,8 +12,8 @@ Aufnahme von Tamarisken und Untersuchungs des Verbreitungsmusters anhand untersc
 - [ ] Bilder der handschriftlichen Aufnahmebögen hochladen
 - [ ] digitalen Aufnahmebogen mit handschriftlichen abgleichen
     - [x] ~~rotes GPS-Gerät~~
-    - [ ] grünes GPS-Gerät
-- [x] ~~GPS-Punkte mit Attributen aus Aufnahmebogen verknüpfen~~
+    - [x] ~~grünes GPS-Gerät~~
+- [ ] GPS-Punkte mit Attributen aus Aufnahmebogen verknüpfen
 - [ ] Karten erstellen mit attributabhängiger Punktfärbung
 - [x] ~~Orthophotos hochladen~~
 - [ ] Abstand zum Fluss anhand des Orthophotos

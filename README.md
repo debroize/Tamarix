@@ -4,8 +4,9 @@ Lech-Praktikum
 Aufnahme von Tamarisken und Untersuchungs des Verbreitungsmusters anhand unterschiedlicher Parameter
 
 ### Vorhandene Daten
-- Aufnahmebogen nach Transekt
-- GPS-Punkte nach Transekt sortiert
+- Aufnahmebogen komplett
+- GPS-Punkte nach Transekt sortiert mit Attributen
+- Orthophotos
 
 ## ToDo:
 

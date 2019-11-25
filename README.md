@@ -17,6 +17,7 @@ Aufnahme von Tamarisken und Untersuchungs des Verbreitungsmusters anhand untersc
 - [x] ~~GPS-Punkte mit Attributen aus Aufnahmebogen verknüpfen~~
 - [ ] Karten erstellen mit attributabhängiger Punktfärbung
 - [x] ~~Orthophotos hochladen~~
+- [ ] Orthophotos georeferenzieren
 - [ ] Abstand zum Fluss anhand des Orthophotos
 - [ ] Korrelationsplots mit auffälligen Attributen
 - [ ] Höhenmodell bestellen

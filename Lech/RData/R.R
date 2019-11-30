@@ -56,3 +56,4 @@ lines(2:6, medi[, 2], col = "darkblue", lwd = 2)
 lines(2:6, medi[, 4], col = "blue", lwd = 2)
 legend(2, 250, c("Q75", "Median", "Q25"), col = c("blue", "red", "darkblue"),
        bty = "n", lwd = 2)
+

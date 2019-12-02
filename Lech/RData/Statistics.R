@@ -1,5 +1,7 @@
 ### Test
 
+install.packages("geosphere")
+
 require(raster)
 require(rgdal)
 require(geosphere)
@@ -11,7 +13,11 @@ require(geosphere)
   # t3 <- readOGR("/home/denis/Dokumente/GitHub-Repos/Tamarix/Tamarix/Lech/GPS-Punkte/Mit Attributen/Tam/T3_Tam.shp")
   # t4 <- readOGR("/home/denis/Dokumente/GitHub-Repos/Tamarix/Tamarix/Lech/GPS-Punkte/Mit Attributen/Tam/T4_Tam.shp")
   # t5 <- readOGR("/home/denis/Dokumente/GitHub-Repos/Tamarix/Tamarix/Lech/GPS-Punkte/Mit Attributen/Tam/T5_Tam.shp")
-tAll <- readOGR("/home/denis/Dokumente/GitHub-Repos/Tamarix/Tamarix/Lech/GPS-Punkte/Mit Attributen/Tam/Tam_All_DGM.shp")
+
+
+#tAll <- readOGR("/home/denis/Dokumente/GitHub-Repos/Tamarix/Tamarix/Lech/GPS-Punkte/Mit Attributen/Tam/Tam_All_DGM.shp")
+#tAll<- readOGR("D://Uni/Lech/Tamarix/Lech/GPS-Punkte/Mit Attributen/Tam/Tam_All_DGM.shp")
+
 
 head(tAll, 5)
 summary(tAll)

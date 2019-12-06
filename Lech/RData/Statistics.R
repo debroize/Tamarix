@@ -12,67 +12,13 @@ require(geosphere)
 
 tAll <- readOGR("./Lech/GPS-Punkte/Mit Attributen/Tam/TamAllDGMDist.shp")
 
-<<<<<<< HEAD
-=======
-tAll<- readOGR("./Lech/GPS-Punkte/Mit Attributen/Tam/Tam_All_DGM.shp")
-
-<<<<<<< HEAD
-=======
-head(tAll, 5)
-summary(tAll)
->>>>>>> 7919715c6526f02f21c602c678df9f7d6482e2d4
 str(tAll)
->>>>>>> ffb64119de06d9a7fdbcfb000a0f264a54c7e330
 
-<<<<<<< HEAD
 head(tAll@data)
-=======
-for (i in 2:22) {
-  tAll@data[, i] <- as.character(tAll@data[, i])
-}
-
-for (j in c(3, 5:22)) {
-  tAll@data[, j] <- as.numeric(tAll@data[, j])
-}
-
-### Lech-Mittellinie
-lech <- readOGR("./Lech/shapes/Lech_Mittellinie.shp")
-
-### Kontrolle
-names(tAll)
-colnames(tAll@data)
-head(tAll, 5)
-str(tAll@data)
-
-plot(lech)
-points(tAll)
-
-# Distanz der Punkte zur Lech-Mittellinie ####
-tAll_Dist <- cbind(tAll@data, Dist = dist2Line(as.data.frame(tAll)[c(24:25)], lech)[,1])
-tAll@data <- tAll_Dist
-# writeOGR(tAll, layer = "TamAll", dsn = "./Lech/GPS-Punkte/Mit Attributen/Tam/TamAllDGMDist.shp", driver = "ESRI Shapefile")
-
-
-# Neue Shapadatei einlesen
-tAll <-  readOGR("./Lech/GPS-Punkte/Mit Attributen/Tam/TamAllDGMDist.shp")     
-  
-str(tAll@data)
-
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-#writeOGR(tAll, layer = "TamAll", dsn = "./Lech/GPS-Punkte/Mit Attributen/Tam/TamAllDGMDist.shp", driver = "ESRI Shapefile")
-=======
-writeOGR(tAll, layer = "TamAll", dsn = "./Lech/GPS-Punkte/Mit Attributen/Tam/TamAllDGMDist.shp", driver = "ESRI Shapefile")
->>>>>>> 46959480750a031d2339d28ffcc9422f28b3c7a4
-    
->>>>>>> ffb64119de06d9a7fdbcfb000a0f264a54c7e330
-
->>>>>>> 7919715c6526f02f21c602c678df9f7d6482e2d4
 
 # Datensatz auf Vitalitätstypen aufteilen ####
 tSub <- tAll
-tSub@data <- tAll@data[c('name', 'Veg_Type', 'Pnt_Vit', 'MorphDyn', 'DGM', 'Dist')]
+tSub@data <- tAll@data[c('name', 'Veg.Type', 'Pnt.Vit', 'MorphDyn', 'DGM', 'Dist')]
 
 tVit2 <- tSub@data[tSub@data$Pnt.Vit == 2, ]
 tVit3 <- tSub@data[tSub@data$Pnt.Vit == 3, ]
@@ -185,7 +131,7 @@ head(nearest5, 5)
 ## Punktnummer durch VitTyp ersetzt
 for(i in tSub@data$name){
   nearest5[,6:10][nearest5[,6:10] == i] <- tSub@data$Pnt.Vit[tSub@data$name == i]
-
+  
 }
 
 
@@ -226,43 +172,17 @@ for(ownVitTyp in 2:6){
     nbVitTab[ownVitTyp-1, nbrVitTyp-1] <- 
       sum(tSub@data[tSub@data$Pnt.Vit == ownVitTyp,][c('Pnr1', 'Pnr2', 'Pnr3', 'Pnr4', 'Pnr5')] == nbrVitTyp )
     nbVitTab[ownVitTyp-1, nbrVitTyp-1] <- 
-              nbVitTab[ownVitTyp-1, nbrVitTyp-1]/
-              (nrow(tSub@data[tSub@data$Pnt.Vit == ownVitTyp,]) * nrow(tSub@data[tSub@data$Pnt.Vit == nbrVitTyp,]))
-   }
+      nbVitTab[ownVitTyp-1, nbrVitTyp-1]/
+      (nrow(tSub@data[tSub@data$Pnt.Vit == ownVitTyp,]) * nrow(tSub@data[tSub@data$Pnt.Vit == nbrVitTyp,]))
+  }
 }
 nbVitTab
 
 ## normalisieren
 nbVitTab[1,1]
-  nrow(tSub@data[tSub@data$Pnt.Vit == ownVitTyp,])
+nrow(tSub@data[tSub@data$Pnt.Vit == ownVitTyp,])
 
 
 summary(nbVitTab)
 imgVitTab <- raster(as.matrix(nbVitTab))
 plot(imgVitTab)
-
-
-
-
-
-## Wenn keine normalverteilung vorliegt ist anstatt der ANOVA der Kruskal-Wallis Test anzuwenden
-#### Kuskal-Wallis ####
-# Höhe der VitTypen
-### Test auf Normalverteilung
-shapiro.test(tSub@data$DGM) # nicht normalverteilt
-### Test auf Homogenität der Varianzen
-fligner.test(tSub@data$DGM ~ tSub@data$Pnt.Vit) # Varianzen sind verschieden
-
-# varsDGM <- c(var(tVit2$DGM), var(tVit3$DGM), var(tVit4$DGM), var(tVit5$DGM), var(tVit6$DGM))
-
-
-## 
-install.packages("pgirmess")
- kruskal.test(tSub@data$DGM ~ tSub@data$Pnt.Vit) # signifikant => mindestens ein VitTyp unterscheidet sich von den anderen
-
-
- # TODO:
- #- Methodenbeschreibung Statistik
- #- 
- colnames(tAll@data)
- 

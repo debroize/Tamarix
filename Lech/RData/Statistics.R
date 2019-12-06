@@ -32,13 +32,13 @@ str(tAll)
 
 # Datensatz auf Vitalitätstypen aufteilen ####
 tSub <- tAll
-tSub@data <- tAll@data[c('name', 'Veg_Type', 'Pnt_Vit', 'MorphDyn', 'DGM', 'Dist')]
+tSub@data <- tAll@data[c('NAME', 'VEG_TYPE', 'PNT_VIT', 'MORPHDYN', 'DGM', 'Dist')]
 
-tVit2 <- tSub@data[tSub@data$Pnt.Vit == 2, ]
-tVit3 <- tSub@data[tSub@data$Pnt.Vit == 3, ]
-tVit4 <- tSub@data[tSub@data$Pnt.Vit == 4, ]
-tVit5 <- tSub@data[tSub@data$Pnt.Vit == 5, ]
-tVit6 <- tSub@data[tSub@data$Pnt.Vit == 6, ]
+tVit2 <- tSub@data[tSub@data$PNT_VIT == 2, ]
+tVit3 <- tSub@data[tSub@data$PNT_VIT == 3, ]
+tVit4 <- tSub@data[tSub@data$PNT_VIT == 4, ]
+tVit5 <- tSub@data[tSub@data$PNT_VIT == 5, ]
+tVit6 <- tSub@data[tSub@data$PNT_VIT == 6, ]
 
 
 summary(tVit2)

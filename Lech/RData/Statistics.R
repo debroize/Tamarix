@@ -24,6 +24,14 @@ summary(tAll)
 str(tAll)
 >>>>>>> ffb64119de06d9a7fdbcfb000a0f264a54c7e330
 
+for (i in 2:22) {
+  tAll@data[, i] <- as.character(tAll@data[, i])
+}
+
+for (j in c(3, 5:22)) {
+  tAll@data[, j] <- as.numeric(tAll@data[, j])
+}
+
 ### Lech-Mittellinie
 lech <- readOGR("./Lech/shapes/Lech_Mittellinie.shp")
 
@@ -35,8 +43,6 @@ str(tAll@data)
 
 plot(lech)
 points(tAll)
-
-
 
 # Distanz der Punkte zur Lech-Mittellinie ####
 tAll_Dist <- cbind(tAll@data, Dist = dist2Line(as.data.frame(tAll)[c(24:25)], lech)[,1])
@@ -50,12 +56,20 @@ tAll <-  readOGR("./Lech/GPS-Punkte/Mit Attributen/Tam/TamAllDGMDist.shp")
 str(tAll@data)
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 #writeOGR(tAll, layer = "TamAll", dsn = "./Lech/GPS-Punkte/Mit Attributen/Tam/TamAllDGMDist.shp", driver = "ESRI Shapefile")
+=======
+writeOGR(tAll, layer = "TamAll", dsn = "./Lech/GPS-Punkte/Mit Attributen/Tam/TamAllDGMDist.shp", driver = "ESRI Shapefile")
+>>>>>>> 46959480750a031d2339d28ffcc9422f28b3c7a4
     
 >>>>>>> ffb64119de06d9a7fdbcfb000a0f264a54c7e330
 
 
+
+tAll <- readOGR("./Lech/GPS-Punkte/Mit Attributen/Tam/TamAllDGMDist.shp")
+
+str(tAll)
 
 # Datensatz auf Vitalitätstypen aufteilen ####
 tSub <- tAll

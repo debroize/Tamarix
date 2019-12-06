@@ -41,11 +41,15 @@ tAll_Dist <- cbind(tAll@data, Dist = dist2Line(as.data.frame(tAll)[c(24:25)], le
 
 tAll@data <- tAll_Dist
 
-#writeOGR(tAll, layer = "TamAll", dsn = "./Lech/GPS-Punkte/Mit Attributen/Tam/TamAllDGMDist.shp", driver = "ESRI Shapefile")
+writeOGR(tAll, layer = "TamAll", dsn = "./Lech/GPS-Punkte/Mit Attributen/Tam/TamAllDGMDist.shp", driver = "ESRI Shapefile")
     
 
 head(tAll@data)
 
+
+tAll <- readOGR("./Lech/GPS-Punkte/Mit Attributen/Tam/TamAllDGMDist.shp")
+
+str(tAll)
 
 # Datensatz auf Vitalitätstypen aufteilen ####
 tSub <- tAll

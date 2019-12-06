@@ -1,6 +1,6 @@
 ### Test
 
-install.packages("geosphere")
+#install.packages("geosphere")
 
 require(raster)
 require(rgdal)
@@ -8,67 +8,42 @@ require(geosphere)
 
 # Daten einlesen ####
 
-### GPS-Punkte
-  # t2 <- readOGR("/home/denis/Dokumente/GitHub-Repos/Tamarix/Tamarix/Lech/GPS-Punkte/Mit Attributen/Tam/T2_Tam.shp")
-  # t3 <- readOGR("/home/denis/Dokumente/GitHub-Repos/Tamarix/Tamarix/Lech/GPS-Punkte/Mit Attributen/Tam/T3_Tam.shp")
-  # t4 <- readOGR("/home/denis/Dokumente/GitHub-Repos/Tamarix/Tamarix/Lech/GPS-Punkte/Mit Attributen/Tam/T4_Tam.shp")
-  # t5 <- readOGR("/home/denis/Dokumente/GitHub-Repos/Tamarix/Tamarix/Lech/GPS-Punkte/Mit Attributen/Tam/T5_Tam.shp")
+### GPS-Punkte mit DGM und Dist
+tAll <- readOGR("./Lech/GPS-Punkte/Mit Attributen/Tam/TamAllDGMDist.shp")
 
-
-#tAll <- readOGR("/home/denis/Dokumente/GitHub-Repos/Tamarix/Tamarix/Lech/GPS-Punkte/Mit Attributen/Tam/Tam_All_DGM.shp")
-#tAll<- readOGR("D://Uni/Lech/Tamarix/Lech/GPS-Punkte/Mit Attributen/Tam/Tam_All_DGM.shp")
-
-
-head(tAll, 5)
-summary(tAll)
-
-### Lech-Mittellinie
-lech <- readOGR("./Lech/shapes/Lech_Mittellinie.shp")
-
-### Kontrolle
-plot(lech)
-points(tAll)
-
-
-
-# Distanz der Punkte zur Lech-Mittellinie ####
-tAll_Dist <- cbind(tAll@data, Dist = dist2Line(as.data.frame(tAll)[c(24:25)], lech)[,1])
-
-tAll@data <- tAll_Dist
-
-writeOGR(tAll, layer = "TamAll", dsn = "./Lech/GPS-Punkte/Mit Attributen/Tam/TamAllDGMDist.shp", driver = "ESRI Shapefile")
-    
-
-head(tAll@data)
+## Datentypen anpassen
+for (i in 2:22) {
+  tAll@data[, i] <- as.character(tAll@data[, i])
+}
+for (j in c(3, 5:22)) {
+  tAll@data[, j] <- as.numeric(tAll@data[, j])
+}
 
 
 # Datensatz auf Vitalitätstypen aufteilen ####
 tSub <- tAll
-tSub@data <- tAll@data[c('name', 'Veg.Type', 'Pnt.Vit', 'MorphDyn', 'DGM', 'Dist')]
+tSub@data <- tAll@data[c('NAME', 'VEG_TYPE', 'PNT_VIT', 'MORPHDYN', 'DGM', 'Dist')]
 
-tVit2 <- tSub@data[tSub@data$Pnt.Vit == 2, ]
-tVit3 <- tSub@data[tSub@data$Pnt.Vit == 3, ]
-tVit4 <- tSub@data[tSub@data$Pnt.Vit == 4, ]
-tVit5 <- tSub@data[tSub@data$Pnt.Vit == 5, ]
-tVit6 <- tSub@data[tSub@data$Pnt.Vit == 6, ]
+tVit2 <- tSub@data[tSub@data$PNT_VIT == 2, ]
+tVit3 <- tSub@data[tSub@data$PNT_VIT == 3, ]
+tVit4 <- tSub@data[tSub@data$PNT_VIT == 4, ]
+tVit5 <- tSub@data[tSub@data$PNT_VIT == 5, ]
+tVit6 <- tSub@data[tSub@data$PNT_VIT == 6, ]
 
 
 summary(tVit2)
 str(tSub@data)
 
-tSub@data$name <- as.numeric(as.character(tSub@data$name))
-tSub@data$Pnt.Vit <- as.numeric(as.character(tSub@data$Pnt.Vit))
-tSub@data$MorphDyn <- as.numeric(as.character(tSub@data$MorphDyn))
-
 # Analyse ob sich die Diatanzen der VitTypen unterscheiden ####
 ## Bedingungen Prüfen
 ### Histogramme
-hist(tSub@data$Dist)
-hist(tVit2$Dist)
-hist(tVit3$Dist)
-hist(tVit4$Dist)
-hist(tVit5$Dist)
-hist(tVit6$Dist)
+par(mfrow= c(2,3))
+hist(tSub@data$Dist, main = "", xlab = "Alle", col = "darkblue", xlim = c(140, 340), breaks = seq(140, 340, by= 20))
+hist(tVit2$Dist, main = "Flussabstand", xlab = "Juvenil", col = "blue", xlim = c(140, 340), breaks = seq(140, 340, by= 20))
+hist(tVit3$Dist, main = "", xlab = "Jung Adult", col = "blue", xlim = c(140, 340), breaks = seq(140, 340, by= 20))
+hist(tVit4$Dist, main = "", xlab = "Adult", col = "blue", xlim = c(140, 340), breaks = seq(140, 340, by= 20))
+hist(tVit5$Dist, main = "", xlab = "Senil", col = "blue", xlim = c(140, 340), breaks = seq(140, 340, by= 20))
+hist(tVit6$Dist, main = "", xlab = "Tot", col = "blue", xlim = c(140, 340), breaks = seq(140, 340, by= 20))
 ### Test auf Normalverteilung
 shapiro.test(tSub@data$Dist) # nicht normalverteilt
 ### Test auf Homogenität der Varianzen
@@ -79,6 +54,7 @@ fligner.test(tSub@data$Dist ~ tSub@data$Pnt.Vit) # Varianzen sind verschieden
 
 
 
+# T-Tests auf mittlere Flussdistanz ####
 
 t.test(tVit5$Dist, tVit6$Dist)
 ## signifikante Unterschiede in der Flussdistanz-Verteilung zwischen:
@@ -93,12 +69,13 @@ t.test(tVit5$Dist, tVit6$Dist)
 # Analyse ob sich die Höhe der VitTypen unterscheiden ####
 ## Bedingungen Prüfen
 ### Histogramme
-hist(tSub@data$DGM)
-hist(tVit2$DGM)
-hist(tVit3$DGM)
-hist(tVit4$DGM)
-hist(tVit5$DGM)
-hist(tVit6$DGM)
+par(mfrow= c(2,3))
+hist(tSub@data$DGM, main = "", xlab = "Alle", col = "brown", xlim = c(880, 884), breaks = seq(880, 884, by= 0.5))
+hist(tVit2$DGM, main = "DGM", xlab = "Juvenil", col = "orange", xlim = c(880, 884), breaks = seq(880, 884, by= 0.5))
+hist(tVit3$DGM, main = "", xlab = "Jung Adult", col = "orange", xlim = c(880, 884), breaks = seq(880, 884, by= 0.5))
+hist(tVit4$DGM, main = "", xlab = "Adult", col = "orange", xlim = c(880, 884), breaks = seq(880, 884, by= 0.5))
+hist(tVit5$DGM, main = "", xlab = "Senil", col = "orange", xlim = c(880, 884), breaks = seq(880, 884, by= 0.5))
+hist(tVit6$DGM, main = "", xlab = "Tot", col = "orange", xlim = c(880, 884), breaks = seq(880, 884, by= 0.5))
 ### Test auf Normalverteilung
 shapiro.test(tSub@data$DGM) # nicht normalverteilt
 ### Test auf Homogenität der Varianzen
@@ -157,7 +134,7 @@ head(nearest5, 5)
 ## Punktnummer durch VitTyp ersetzt
 for(i in tSub@data$name){
   nearest5[,6:10][nearest5[,6:10] == i] <- tSub@data$Pnt.Vit[tSub@data$name == i]
-
+  
 }
 
 
@@ -198,15 +175,15 @@ for(ownVitTyp in 2:6){
     nbVitTab[ownVitTyp-1, nbrVitTyp-1] <- 
       sum(tSub@data[tSub@data$Pnt.Vit == ownVitTyp,][c('Pnr1', 'Pnr2', 'Pnr3', 'Pnr4', 'Pnr5')] == nbrVitTyp )
     nbVitTab[ownVitTyp-1, nbrVitTyp-1] <- 
-              nbVitTab[ownVitTyp-1, nbrVitTyp-1]/
-              (nrow(tSub@data[tSub@data$Pnt.Vit == ownVitTyp,]) * nrow(tSub@data[tSub@data$Pnt.Vit == nbrVitTyp,]))
-   }
+      nbVitTab[ownVitTyp-1, nbrVitTyp-1]/
+      (nrow(tSub@data[tSub@data$Pnt.Vit == ownVitTyp,]) * nrow(tSub@data[tSub@data$Pnt.Vit == nbrVitTyp,]))
+  }
 }
 nbVitTab
 
 ## normalisieren
 nbVitTab[1,1]
-  nrow(tSub@data[tSub@data$Pnt.Vit == ownVitTyp,])
+nrow(tSub@data[tSub@data$Pnt.Vit == ownVitTyp,])
 
 
 summary(nbVitTab)

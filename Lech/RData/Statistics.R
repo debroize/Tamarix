@@ -16,9 +16,23 @@ str(tAll)
 
 head(tAll@data)
 
+projection(tAll)
+
+## Fuck factors
+
+for (i in 2:22) {
+  tAll@data[, i] <- as.character(tAll@data[, i])
+}
+
+for (j in c(3, 5:22)) {
+  tAll@data[, j] <- as.numeric(tAll@data[, j])
+}
+
+str(tAll)
+
 # Datensatz auf Vitalitätstypen aufteilen ####
 tSub <- tAll
-tSub@data <- tAll@data[c('name', 'Veg.Type', 'Pnt.Vit', 'MorphDyn', 'DGM', 'Dist')]
+tSub@data <- tAll@data[c('name', 'Veg_Type', 'Pnt_Vit', 'MorphDyn', 'DGM', 'Dist')]
 
 tVit2 <- tSub@data[tSub@data$Pnt.Vit == 2, ]
 tVit3 <- tSub@data[tSub@data$Pnt.Vit == 3, ]
@@ -29,10 +43,6 @@ tVit6 <- tSub@data[tSub@data$Pnt.Vit == 6, ]
 
 summary(tVit2)
 str(tSub@data)
-
-tSub@data$name <- as.numeric(as.character(tSub@data$name))
-tSub@data$Pnt.Vit <- as.numeric(as.character(tSub@data$Pnt.Vit))
-tSub@data$MorphDyn <- as.numeric(as.character(tSub@data$MorphDyn))
 
 # Analyse ob sich die Diatanzen der VitTypen unterscheiden ####
 ## Bedingungen Prüfen

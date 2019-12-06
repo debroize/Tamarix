@@ -13,7 +13,7 @@ head(t)
 
 
 vit_col <- c("cyan", "green", "yellow", "brown", "gray50")
-
+sub_col <- c("")
 
 hist(t[, "Pnt.Vit"], breaks = 1:6, xlab = "Vitalitätsstufe", ylab = "Anzahl",
      main = "Tamarisken Anzahl nach Vitalität", col = vit_col)
@@ -45,8 +45,10 @@ for (i in 2:6) {
 
 s <- as.matrix(sub_mean_vit)
 
-
-barplot(s)
+barplot(s, main = "Substrat Anteile nach Vitalität", ylab = "Anteil in [%]", 
+        xlab = "Vitalitatsstufe",  legend = c("Ton bis Feinsand", "Sand", "Kies", "Steine"),
+        density = c(100,75,50, 0))
+png("Substratanteile im Mittel nach Vitaluität.png")
 
 ###############
 ###Boxplots####

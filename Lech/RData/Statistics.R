@@ -13,13 +13,16 @@ require(geosphere)
   # t5 <- readOGR("/home/denis/Dokumente/GitHub-Repos/Tamarix/Tamarix/Lech/GPS-Punkte/Mit Attributen/Tam/T5_Tam.shp")
 tAll <- readOGR("/home/denis/Dokumente/GitHub-Repos/Tamarix/Tamarix/Lech/GPS-Punkte/Mit Attributen/Tam/Tam_All_DGM.shp")
 
-head(tAll, 5)
-summary(tAll)
 
 ### Lech-Mittellinie
 lech <- readOGR("./Lech/shapes/Lech_Mittellinie.shp")
 
 ### Kontrolle
+names(tAll)
+colnames(tAll@data)
+head(tAll, 5)
+str(tAll@data)
+
 plot(lech)
 points(tAll)
 
@@ -27,18 +30,21 @@ points(tAll)
 
 # Distanz der Punkte zur Lech-Mittellinie ####
 tAll_Dist <- cbind(tAll@data, Dist = dist2Line(as.data.frame(tAll)[c(24:25)], lech)[,1])
-
 tAll@data <- tAll_Dist
+# writeOGR(tAll, layer = "TamAll", dsn = "./Lech/GPS-Punkte/Mit Attributen/Tam/TamAllDGMDist.shp", driver = "ESRI Shapefile")
 
-writeOGR(tAll, layer = "TamAll", dsn = "./Lech/GPS-Punkte/Mit Attributen/Tam/TamAllDGMDist.shp", driver = "ESRI Shapefile")
-    
 
-head(tAll@data)
+# Neue Shapadatei einlesen
+tAll <-  readOGR("./Lech/GPS-Punkte/Mit Attributen/Tam/TamAllDGMDist.shp")     
+  
+str(tAll@data)
+
+
 
 
 # Datensatz auf Vitalitätstypen aufteilen ####
 tSub <- tAll
-tSub@data <- tAll@data[c('name', 'Veg.Type', 'Pnt.Vit', 'MorphDyn', 'DGM', 'Dist')]
+tSub@data <- tAll@data[c('name', 'Veg_Type', 'Pnt_Vit', 'MorphDyn', 'DGM', 'Dist')]
 
 tVit2 <- tSub@data[tSub@data$Pnt.Vit == 2, ]
 tVit3 <- tSub@data[tSub@data$Pnt.Vit == 3, ]
@@ -206,3 +212,29 @@ nbVitTab[1,1]
 summary(nbVitTab)
 imgVitTab <- raster(as.matrix(nbVitTab))
 plot(imgVitTab)
+
+
+
+
+
+## Wenn keine normalverteilung vorliegt ist anstatt der ANOVA der Kruskal-Wallis Test anzuwenden
+#### Kuskal-Wallis ####
+# Höhe der VitTypen
+### Test auf Normalverteilung
+shapiro.test(tSub@data$DGM) # nicht normalverteilt
+### Test auf Homogenität der Varianzen
+fligner.test(tSub@data$DGM ~ tSub@data$Pnt.Vit) # Varianzen sind verschieden
+
+# varsDGM <- c(var(tVit2$DGM), var(tVit3$DGM), var(tVit4$DGM), var(tVit5$DGM), var(tVit6$DGM))
+
+
+## 
+install.packages("pgirmess")
+ kruskal.test(tSub@data$DGM ~ tSub@data$Pnt.Vit) # signifikant => mindestens ein VitTyp unterscheidet sich von den anderen
+
+
+ # TODO:
+ #- Methodenbeschreibung Statistik
+ #- 
+ colnames(tAll@data)
+ 

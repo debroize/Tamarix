@@ -19,6 +19,7 @@ tAll<- readOGR("./Lech/GPS-Punkte/Mit Attributen/Tam/Tam_All_DGM.shp")
 
 head(tAll, 5)
 summary(tAll)
+str(tAll)
 
 ### Lech-Mittellinie
 lech <- readOGR("./Lech/shapes/Lech_Mittellinie.shp")
@@ -34,7 +35,7 @@ tAll_Dist <- cbind(tAll@data, Dist = dist2Line(as.data.frame(tAll)[c(24:25)], le
 
 tAll@data <- tAll_Dist
 
-writeOGR(tAll, layer = "TamAll", dsn = "./Lech/GPS-Punkte/Mit Attributen/Tam/TamAllDGMDist.shp", driver = "ESRI Shapefile")
+#writeOGR(tAll, layer = "TamAll", dsn = "./Lech/GPS-Punkte/Mit Attributen/Tam/TamAllDGMDist.shp", driver = "ESRI Shapefile")
     
 
 head(tAll@data)

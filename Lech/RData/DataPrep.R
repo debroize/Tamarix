@@ -41,6 +41,28 @@ tAll_Dist <- cbind(tAll@data, Dist = dist2Line(as.data.frame(tAll)[c(24:25)], le
 
 tAll@data <- tAll_Dist
 
+
+# Add transect ####
+
+t2 <- cbind(read.csv("./Lech/RData/T2.csv", stringsAsFactors = F)[, 1], c(2))
+t3 <- cbind(read.csv("./Lech/RData/T3.csv", stringsAsFactors = F)[, 1], c(3))
+t4 <- cbind(read.csv("./Lech/RData/T4.csv", stringsAsFactors = F)[, 1], c(4))
+t5 <- cbind(read.csv("./Lech/RData/T5.csv", stringsAsFactors = F)[, 1], c(5))
+
+head(t2)
+
+tges <- rbind(t2, t3, t4, t5)
+
+tsort <- numeric()
+
+for (k in 1:length(tAll@data$NAME)) {
+ tsort[k] <- tges[tges[, 1] == tAll@data$NAME[k], 2] 
+}
+
+
+tAll@data <- cbind(tAll@data, Trans = tsort)
+
+
 writeOGR(tAll, layer = "TamAll", dsn = "./Lech/GPS-Punkte/Mit Attributen/Tam/TamAllDGMDist.shp", driver = "ESRI Shapefile")
 
 

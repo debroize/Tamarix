@@ -1,5 +1,7 @@
 ### Test
 
+#install.packages("geosphere")
+
 require(raster)
 require(rgdal)
 require(geosphere)
@@ -11,8 +13,16 @@ require(geosphere)
   # t3 <- readOGR("/home/denis/Dokumente/GitHub-Repos/Tamarix/Tamarix/Lech/GPS-Punkte/Mit Attributen/Tam/T3_Tam.shp")
   # t4 <- readOGR("/home/denis/Dokumente/GitHub-Repos/Tamarix/Tamarix/Lech/GPS-Punkte/Mit Attributen/Tam/T4_Tam.shp")
   # t5 <- readOGR("/home/denis/Dokumente/GitHub-Repos/Tamarix/Tamarix/Lech/GPS-Punkte/Mit Attributen/Tam/T5_Tam.shp")
-tAll <- readOGR("/home/denis/Dokumente/GitHub-Repos/Tamarix/Tamarix/Lech/GPS-Punkte/Mit Attributen/Tam/Tam_All_DGM.shp")
 
+
+tAll<- readOGR("./Lech/GPS-Punkte/Mit Attributen/Tam/Tam_All_DGM.shp")
+
+<<<<<<< HEAD
+=======
+head(tAll, 5)
+summary(tAll)
+str(tAll)
+>>>>>>> ffb64119de06d9a7fdbcfb000a0f264a54c7e330
 
 ### Lech-Mittellinie
 lech <- readOGR("./Lech/shapes/Lech_Mittellinie.shp")
@@ -39,6 +49,11 @@ tAll <-  readOGR("./Lech/GPS-Punkte/Mit Attributen/Tam/TamAllDGMDist.shp")
   
 str(tAll@data)
 
+<<<<<<< HEAD
+=======
+#writeOGR(tAll, layer = "TamAll", dsn = "./Lech/GPS-Punkte/Mit Attributen/Tam/TamAllDGMDist.shp", driver = "ESRI Shapefile")
+    
+>>>>>>> ffb64119de06d9a7fdbcfb000a0f264a54c7e330
 
 
 

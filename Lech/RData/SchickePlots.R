@@ -4,6 +4,9 @@
 
 setwd("C:/Users/Enz/Documents/Studium/Forschungsprojekt Lech/Tamarix")
 
+library(raster)
+library(rgdal)
+
 list.files()
 
 
@@ -54,34 +57,13 @@ png("Substratanteile im Mittel nach Vitaluität.png")
 ###Boxplots####
 ## nach dist
 
+tAll <- readOGR("Lech/GPS-Punkte/Mit Attributen/Tam/TamAllDGMDist.shp")
 
-sub_mean_dist <- data.frame()
+class(tAll)
 
-range(t["MEAN_Dist_n5"])
+head(tAll)
 
-for (i in 2:6) {
-  sub_vit1 <- substrate$Sub.1[substrate$Pnt.Vit == i]
-  sub_vit2 <- substrate$Sub.2[substrate$Pnt.Vit == i]
-  sub_vit3 <- substrate$Sub.3[substrate$Pnt.Vit == i]
-  sub_vit4 <- substrate$Sub.4[substrate$Pnt.Vit == i]
-  
-  sub_mean_vit[1,i-1] <- mean(sub_vit1)
-  sub_mean_vit[2,i-1] <- mean(sub_vit2)
-  sub_mean_vit[3,i-1] <- mean(sub_vit3)
-  sub_mean_vit[4,i-1] <- mean(sub_vit4)
-  
-}
-
-s <- as.matrix(sub_mean_vit)
-
-
-barplot(s)
-
-
-
-
-
-
-
-
+boxplot(tAll@data[,"Dist"] ~ tAll@data[,"PNT_VIT"], 
+        main = "Entfernung vom Hauptstrom nach Vitalität", xlab = "Vitalitätsstufe", 
+        ylab = "Entfernung in Meter" )
 

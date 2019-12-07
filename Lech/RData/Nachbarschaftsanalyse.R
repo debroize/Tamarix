@@ -13,7 +13,7 @@ for (j in c(3, 5:22)) {
 
 ## Datensatz kürzen
 tSub <- tAll
-tSub@data <- tAll@data[c('NAME', 'VEG_TYPE', 'PNT_VIT', 'MORPHDYN', 'DGM', 'Dist')]
+tSub@data <- tAll@data[c('NAME', 'VEG_TYPE', 'PNT_VIT', 'MORPHDYN', 'DGM', 'Dist', 'Trans')]
 
 
 

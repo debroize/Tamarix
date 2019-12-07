@@ -62,6 +62,21 @@ for (k in 1:length(tAll@data$NAME)) {
 
 tAll@data <- cbind(tAll@data, Trans = tsort)
 
+colV <- data.frame(2:6, c("dodgerblue2", "green", "gold2", "brown", "gray50"))
+colnames(colV) <- c("Vit", "col")
+str(colV)
+
+coly <- character()
+
+for (l in 1:276) {
+  coly[l] <- as.character(colV$col[colV$Vit == tAll@data$PNT_VIT[l]])
+}
+
+tAll@data <- cbind(tAll@data, Vcol = as.character(coly))
+tAll@data$Vcol <- as.character(tAll@data$Vcol)
+#tAll@data$Vcol <- as.character(coly)
+
+str(tAll@data)
 
 writeOGR(tAll, layer = "TamAll", dsn = "./Lech/GPS-Punkte/Mit Attributen/Tam/TamAllDGMDist.shp", driver = "ESRI Shapefile")
 

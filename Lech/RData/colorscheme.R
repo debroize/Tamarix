@@ -3,7 +3,7 @@
 
 ## Vitalität##
 
-c("dodgerblue2", "green", "gold2", "brown", "gray50")
+c("dodgerblue2", "olivedrab3", "gold2", "brown", "gray50")
 
 
 

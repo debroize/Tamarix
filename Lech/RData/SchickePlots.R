@@ -14,7 +14,7 @@ t <- read.csv("Lech/RData/tges.csv", stringsAsFactors = FALSE)
 
 head(t)
 
-
+x11()
 vit_col <- c("dodgerblue2", "green", "gold2", "brown", "gray50")
 
 hist(t[, "Pnt.Vit"], breaks = 1:6, xlab = "Vitalitätsstufe", ylab = "Anzahl",
@@ -46,6 +46,8 @@ for (i in 2:6) {
 }
 
 s <- as.matrix(sub_mean_vit)
+
+colnames(s) <- c("Juvenil", "Jung Adult", "Adult", "Senil", "Tot")
 
 barplot(s, main = "Substrat Anteile nach Vitalität", ylab = "Anteil in [%]", 
         xlab = "Vitalitatsstufe", density = c(100,75,50, 0),xlim = c(0,7.5))
@@ -80,6 +82,8 @@ for (i in 2:6) {
 }
 
 d <- as.matrix(dens_mean_vit)
+
+colnames(d) <- c("Juvenil", "Jung Adult", "Adult", "Senil", "Tot")
 
 barplot(d, main = "Vegetationsdeckung nach Vitalität", ylab = "Anteil in [%]", 
         xlab = "Vitalitatsstufe", density = c(100,75,50, 0))
@@ -124,12 +128,13 @@ for (i in 2:6) {
 
 
 v <- as.matrix(vtype_sum_vit)
-colnames(v) <- unique(vtype$Veg.Type)
-barplot(v, main = "Vitalit?tstufe nach Vegetationstyp", ylab = "Anzahl Tamarisken", 
-       col = vit_col, las = 2)
-legend(6,80,legend= c("Juvenil", "Jung Adult", "Adult", "Senil", "Tot"), col = vit_col , )
+colnames(v) <- c("Pionier", "Grauerlengeb.", "Weidengeb.", "Erlen-Weidengeb.", "Kiefergeb.", 
+                 "Kiefern-Erlen-Weidengebu.", "Kiefernwald", "Erlen-Kiefergeb.", "Erlenwald")   
+barplot(v, main = "Vitalitätstufe nach Vegetationstyp", ylab = "Anzahl Tamarisken", 
+       col = vit_col)
+legend(8, 80,legend = c("Juvenil", "Jung Adult", "Adult", "Senil", "Tot"), fill = vit_col)
 
-
+  png("Vitalitätsstufen nach Vegetationstyp.png")
 
 
 ###############

@@ -241,7 +241,7 @@ par(mfrow= c(1,2))
 boxplot(tSub2@data$AGE_PIN ~ tSub2@data$PNT_VIT, xlab = "Vitalität", ylab = "Standortalter", ylim = c(2,20))
 VegType_ordered <- factor(tSub2@data$VEG_TYPE, ordered = TRUE, 
                           levels = c("Pionier", "Weidengebüsch", "Erlen-Weidengebüsch", "Grauerlengebüsch", "Kiefern-Erlen-Weidengebüsch", "Erlen-Kiefergebüsch", "Erlenwald", "Kiefergebüsch", "Kiefernwald"))
-boxplot(as.numeric(VegType_ordered) ~ tSub2@data$PNT_VIT, xlab = "Vitalität", ylab = "Standorttyp")
+boxplot(tSub2@data$PNT_VIT ~ as.numeric(VegType_ordered), xlab = "Vitalität", ylab = "Standorttyp")
 
 
 par(mfrow= c(1,1))

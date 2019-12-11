@@ -15,11 +15,19 @@ t <- read.csv("Lech/RData/tges.csv", stringsAsFactors = FALSE)
 head(t)
 
 x11()
-vit_col <- c("dodgerblue2", "green", "gold2", "brown", "gray50")
+vit_col <- c("dodgerblue2", "olivedrab3", "gold2", "brown", "gray50")
 
-hist(t[, "Pnt.Vit"], breaks = 1:6, xlab = "Vitalitätsstufe", ylab = "Anzahl",
-     main = "Tamarisken Anzahl nach Vitalität", col = vit_col)
+j <- t$Pnt.Vit
+class(j)
+
+b <- hist(j, breaks = (0.5:6.5),ylim = c(0,120), xlab = "Vitalitätsstadium", 
+          ylab = "Anzahl Tamarisken", main = "Tamarisken Anzahl nach Vitalität", 
+          col = vit_col, xlim = c(1.5,6.5))
+text(b$mids, b$counts, labels=b$counts, adj = c(0.5,-0.5))
+
 png("Hist Vitalität.png")
+
+
 
 
 ############
@@ -44,20 +52,30 @@ for (i in 2:6) {
   sub_mean_vit[4,i-1] <- mean(sub_vit4)
   
 }
-
 s <- as.matrix(sub_mean_vit)
 
-colnames(s) <- c("Juvenil", "Jung Adult", "Adult", "Senil", "Tot")
 
-barplot(s, main = "Substrat Anteile nach Vitalität", ylab = "Anteil in [%]", 
-        xlab = "Vitalitatsstufe", density = c(100,75,50, 0),xlim = c(0,7.5))
+colnames(s) <- c("Juvenil", "Jung Adult", "Adult", "Senil", "Tot")
+x11()
+z <- barplot(s, main = "Substrat Anteile nach Vitalität", ylab = "Anteil in [%]", 
+        xlab = "Vitalitatsstadium", density = c(100,75,50, 0),xlim = c(0,7.5))
+
 legend(6.2,100,legend = c("Ton bis Feinsand", "Sand", "Kies", "Steine"), 
        density = c(100,75,50, 0))
+#text(z, 98,labels= paste("N =" ,b$counts[2:6] ))
+
 
 png("Substratanteile im Mittel nach Vitaluität.png")
 
+##### Density plot nach Distanz###
 
+#a <- tAll@data["Dist"]
+#a <- as.matrix(t((a)))
+#a <- sort(a)
 
+#x11()
+#plot(density(a))
+#barplot(a)
 #################
 ##veg dens
 
@@ -84,10 +102,12 @@ for (i in 2:6) {
 d <- as.matrix(dens_mean_vit)
 
 colnames(d) <- c("Juvenil", "Jung Adult", "Adult", "Senil", "Tot")
+x11()
+o <- barplot(d, ylim = c(0,60), main = "Vegetationsdeckung nach Vitalität", ylab = "Anteil in [%]", 
+        xlab = "Vitalitatsstadium", density = c(100,75,50, 0), beside = TRUE)
+legend(0,60,legend= c("Moos", "Kraut", "Busch", "Baum"), density = c(100,75,50, 0)  )
 
-barplot(d, main = "Vegetationsdeckung nach Vitalität", ylab = "Anteil in [%]", 
-        xlab = "Vitalitatsstufe", density = c(100,75,50, 0))
-legend(0,100,legend= c("Moos", "Kraut", "Busch", "Baum"), density = c(100,75,50, 0)  )
+#text(o, 50,labels= paste("N =" ,b$counts[2:6] ))
 
 png("Vegetationsdeckungen im Mittel nach Vitaluität.png")
 
@@ -126,15 +146,29 @@ for (i in 2:6) {
   vtype_sum_vit[i-1,9] <- sum(vtype_vit9 == i)
   }
 
+ta <- read.csv("C:/Users/Enz/Documents/Studium/Lech/Tamarix/Lech/RData/tges.csv", 
+               stringsAsFactors = FALSE)
+
 
 v <- as.matrix(vtype_sum_vit)
-colnames(v) <- c("Pionier", "Grauerlengeb.", "Weidengeb.", "Erlen-Weidengeb.", "Kiefergeb.", 
-                 "Kiefern-Erlen-Weidengebu.", "Kiefernwald", "Erlen-Kiefergeb.", "Erlenwald")   
-barplot(v, main = "Vitalitätstufe nach Vegetationstyp", ylab = "Anzahl Tamarisken", 
-       col = vit_col)
-legend(8, 80,legend = c("Juvenil", "Jung Adult", "Adult", "Senil", "Tot"), fill = vit_col)
+colnames(v) <- c("Pionier", "Weidengeb.", "Erlen-Weidengeb.", "Grauerlengeb.","Erlenwald",
+                 "Kiefer-Erlen-Weidengeb.", "Kiefergeb.", "Erlen-Kiefergeb.", "Kiefernwald")   
+k <- c()
 
-  png("Vitalitätsstufen nach Vegetationstyp.png")
+for (p in 1:9) {
+  
+k[p] <- (sum(ta$X.Veg.Type.Faktor.[ta$X.Veg.Type.Faktor. == p]))/p
+}
+
+x11()
+h <- barplot(v, main = "Vitalitätstadium nach Vegetationstyp", ylab = "Anzahl Tamarisken", 
+       col = vit_col)
+legend(8, 80,legend = c("Juvenil", "Jung Adult", "Adult", "Senil", "Tot"), fill = vit_col, 
+       cex = 1.25)
+
+text(h, 40,labels= paste("N =" , k), cex = 1.25)
+
+png("Vitalitätsstadium nach Vegetationstyp.png")
 
 
 ###############
@@ -146,7 +180,7 @@ tAll <- readOGR("Lech/GPS-Punkte/Mit Attributen/Tam/TamAllDGMDist.shp")
 class(tAll)
 
 head(tAll)
-
+x11()
 
 boxplot(tAll@data[,"Dist"] ~ tAll@data[,"PNT_VIT"], 
         main = "Entfernung vom Hauptstrom nach Vitalität", xlab = "Vitalitätsstufe", 

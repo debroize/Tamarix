@@ -74,7 +74,7 @@ fligner.test(tSub@data$Dist ~ tSub@data$PNT_VIT) # Varianzen sind verschieden
 t.test(tVit5$Dist, tVit6$Dist)
 ## signifikante Unterschiede in der Flussdistanz-Verteilung zwischen:
 # juvenil (2) und adult (4)
-# juvenil (2) und senil (5)
+# juvenil (2) und senil (5) 
 # jung adult (3) und senil (5)
 # senil (5) und tot (6)
 ################################ T-Test und ANOVA dürfen eigentlich nicht verwendet werden

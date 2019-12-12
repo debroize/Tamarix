@@ -46,14 +46,15 @@ str(tSub@data)
 ## Bedingungen Prüfen
 ### Histogramme
 colpal <- c("dodgerblue2", "olivedrab3", "gold2", "brown", "gray50")
+sizeprop <- 1.55
 x11()
 par(mfrow= c(2,3))
-hist(tSub@data$Dist, main = "", xlab = "Alle", col = "white", xlim = c(120, 350), breaks = seq(140, 340, by= 20), ylab= "Anzahl Tamarisken", cex.lab=1.4)
-hist(tVit2$Dist, main = "Flussabstand [m]", xlab = "Juvenil", col = colpal[1], xlim = c(120, 350), breaks = seq(140, 340, by= 20), ylim= c(0,35), ylab= "Anzahl Tamarisken", cex.lab=1.4, cex.main = 1.4)
-hist(tVit3$Dist, main = "", xlab = "Jung Adult", col = colpal[2], xlim = c(120, 350), breaks = seq(140, 340, by= 20), ylim= c(0,35), ylab= "Anzahl Tamarisken", cex.lab=1.4)
-hist(tVit4$Dist, main = "", xlab = "Adult", col = colpal[3], xlim = c(120, 350), breaks = seq(140, 340, by= 20), ylim= c(0,35), ylab= "Anzahl Tamarisken", cex.lab=1.4)
-hist(tVit5$Dist, main = "", xlab = "Senil", col = colpal[4], xlim = c(120, 350), breaks = seq(140, 340, by= 20), ylim= c(0,35), ylab= "Anzahl Tamarisken", cex.lab=1.4)
-hist(tVit6$Dist, main = "", xlab = "Tot", col = colpal[5], xlim = c(120, 350), breaks = seq(140, 340, by= 20), ylim= c(0,35), ylab= "Anzahl Tamarisken", cex.lab=1.4)
+hist(tSub@data$Dist, main = "", xlab = "Alle", col = "white", xlim = c(120, 350), breaks = seq(140, 340, by= 20), ylab= "Anzahl Tamarisken", cex.lab= sizeprop)
+hist(tVit2$Dist, main = "Flussabstand [m]", xlab = "Juvenil", col = colpal[1], xlim = c(120, 350), breaks = seq(140, 340, by= 20), ylim= c(0,35), ylab= "Anzahl Tamarisken", cex.lab=sizeprop, cex.main = sizeprop +1)
+hist(tVit3$Dist, main = "", xlab = "Jung Adult", col = colpal[2], xlim = c(120, 350), breaks = seq(140, 340, by= 20), ylim= c(0,35), ylab= "Anzahl Tamarisken", cex.lab=sizeprop)
+hist(tVit4$Dist, main = "", xlab = "Adult", col = colpal[3], xlim = c(120, 350), breaks = seq(140, 340, by= 20), ylim= c(0,35), ylab= "Anzahl Tamarisken", cex.lab=sizeprop)
+hist(tVit5$Dist, main = "", xlab = "Senil", col = colpal[4], xlim = c(120, 350), breaks = seq(140, 340, by= 20), ylim= c(0,35), ylab= "Anzahl Tamarisken", cex.lab=sizeprop)
+hist(tVit6$Dist, main = "", xlab = "Tot", col = colpal[5], xlim = c(120, 350), breaks = seq(140, 340, by= 20), ylim= c(0,35), ylab= "Anzahl Tamarisken", cex.lab=sizeprop)
 
 # Boxplot
 par(mfrow= c(1,1))
@@ -146,9 +147,9 @@ hist(tVit6$DGMmod, main = "", xlab = "Tot", col = "orange", xlim = c(880, 884), 
 test<- factor(tSub@data$PNT_VIT, levels= c(2:6), labels= c("Juvenil", "Jung Adult", "Adult", "Senil", "Tot"))
 ?as.factor
 par(mfrow= c(1,1))
-boxplot(tSub@data$DGMmod ~ test, xlab = "Vitalitätsstadium", main = "Grundwasserabstand", ylab= "Angepasste Geländehöhe [m]", col= colpal)
+boxplot(tSub@data$DGMmod ~ test, xlab = "Vitalitätsstadium", main = "Grundwasserabstand", ylab= "Angepasste Geländehöhe [m]", col= colpal, cex.lab= 1.4, cex.main= 2.4)
 
-### Test auf Normalverteilung
+  ### Test auf Normalverteilung
 shapiro.test(tSub@data$DGMmod) # nicht normalverteilt
 ### Test auf Homogenität der Varianzen
 fligner.test(tSub@data$DGMmod ~ tSub@data$PNT_VIT) # Varianzen sind verschieden

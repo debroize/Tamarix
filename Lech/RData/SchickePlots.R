@@ -2,7 +2,8 @@
 
 #Wd setzen
 
-setwd("C:/Users/Enz/Documents/Studium/Forschungsprojekt Lech/Tamarix")
+#setwd("C:/Users/Enz/Documents/Studium/Forschungsprojekt Lech/Tamarix")
+
 
 library(raster)
 library(rgdal)
@@ -10,7 +11,7 @@ library(rgdal)
 list.files()
 
 
-t <- read.csv("Lech/RData/tges.csv", stringsAsFactors = FALSE)
+t <- read.csv("./Lech/RData/tges.csv", stringsAsFactors = FALSE)
 
 head(t)
 
@@ -27,8 +28,23 @@ text(b$mids, b$counts, labels=b$counts, adj = c(0.5,-0.5))
 
 png("Hist Vitalität.png")
 
+## selber plot mit ggplot2 #####
+cs <- c("dodgerblue2", "olivedrab3", "gold2", "brown", "gray50")
+t$Vitalitässtadium <- factor(t$Pnt.Vit, levels= c(2:6), labels= c("Juvenil", "Jung Adult", "Adult", "Senil", "Tot"))
+head(t)
 
+ggplot(t, aes(Vitalitässtadium)) + 
+  ggtitle("Tamariskenanzahl nach Vitalität") + 
+  scale_y_continuous(limits = c(0, 110)) +
+  ylab("Anzahl Tamarisken") +
+  geom_histogram(stat= "count", fill= cs, col= "black") + 
+  geom_text(stat='count', aes(label=..count..), vjust=-1, size= 8) +
+  theme_classic() %+replace%
+  theme(plot.title = element_text(hjust = 0.5, size = 20),
+        axis.text=element_text(size=18),
+        axis.title=element_text(size=18,face="bold"))
 
+  ###############
 
 ############
 ##Barplots##

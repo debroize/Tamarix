@@ -15,14 +15,17 @@ t <- read.csv("Lech/RData/tges.csv", stringsAsFactors = FALSE)
 head(t)
 
 x11()
-vit_col <- c("dodgerblue2", "olivedrab3", "gold2", "brown", "gray50")
+vit_col <- c("black", "dodgerblue2", "olivedrab3", "gold2", "brown", "gray50")
 
 j <- t$Pnt.Vit
 class(j)
 
+test<- factor(tSub@data$PNT_VIT, levels= c(2:6), labels= c("Juvenil", "Jung Adult", "Adult", "Senil", "Tot"))
+
+x11()
 b <- hist(j, breaks = (0.5:6.5),ylim = c(0,120), xlab = "Vitalitätsstadium", 
           ylab = "Anzahl Tamarisken", main = "Tamarisken Anzahl nach Vitalität", 
-          col = vit_col, xlim = c(1.5,6.5))
+          col = vit_col, xlim = c(1.5,6.5), axes = F)
 text(b$mids, b$counts, labels=b$counts, adj = c(0.5,-0.5))
 
 png("Hist Vitalität.png")
@@ -57,11 +60,10 @@ s <- as.matrix(sub_mean_vit)
 
 colnames(s) <- c("Juvenil", "Jung Adult", "Adult", "Senil", "Tot")
 x11()
-z <- barplot(s, main = "Substrat Anteile nach Vitalität", ylab = "Anteil in [%]", 
-        xlab = "Vitalitatsstadium", density = c(100,75,50, 0),xlim = c(0,7.5))
+par(xpd=NA, oma= c(0,1,0,7))
+z <- barplot(s, main = "Substrat Anteile nach Vitalität", ylab = "Anteil in [%]", xlab = "Vitalitätsstadium", density = c(100,75,50, 0),xlim = c(0,7.5), cex.lab = 1.4, cex.main = 1.4)
 
-legend(6.2,100,legend = c("Ton bis Feinsand", "Sand", "Kies", "Steine"), 
-       density = c(100,75,50, 0))
+legend(6.2,100,legend = c("Ton bis Feinsand", "Sand", "Kies", "Steine"), density = c(100,75,50, 0), cex = 1.4)
 #text(z, 98,labels= paste("N =" ,b$counts[2:6] ))
 
 

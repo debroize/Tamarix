@@ -50,7 +50,7 @@ tSub@data$mean5 <- rowMeans(tSub@data[c('Dnr1', 'Dnr2', 'Dnr3', 'Dnr4', 'Dnr5')]
 
 ## ANOVA Bedingungen für Nachbarschaften
 boxplot(tSub@data$mean3 ~ tSub@data$PNT_VIT, ylim= c(0, 15))
-boxplot(tSub@data$mean5 ~ tSub@data$PNT_VIT, ylim= c(0, 15))
+boxplot(tSub@data$mean5 ~ tSub@data$PNT_VIT, ylim= c(0, 15), xlab = "Vitalität", ylab= "Distanz 5 nächste Pflanzen")
 
 ### Test auf Normalverteilung
 shapiro.test(tSub@data$mean3) # nicht normalverteilt
@@ -89,4 +89,14 @@ nrow(tSub@data[tSub@data$PNT_VIT == ownVitTyp,])
 
 summary(nbVitTab)
 imgVitTab <- raster(as.matrix(nbVitTab))
-plot(imgVitTab)
+plot(imgVitTab, main= "Nachbarschaftsbeziehungen")
+
+colnames(nbVitTab) <- c("Juvenil", "Jung-Adult", "Adult", "Senil", "Tot")
+rownames(nbVitTab) <- c("Juvenil", "Jung-Adult", "Adult", "Senil", "Tot")
+nbVitTab2 <- nbVitTab*10
+corrplot(as.matrix(as.data.frame(nbVitTab2)), method = "color", cl.lim=c(min(nbVitTab2),max(nbVitTab2)), col=colorRampPalette(c("darkblue","white","white","white", "lightblue","blue","blue", "darkblue"))(300), cl.pos = "n", tl.col = "black", tl.srt = 45, addgrid.col = "black")
+?corrplot
+corrplot(as.matrix(as.data.frame(nbVitTab2)), method = "color", cl.lim=c(min(nbVitTab2),max(nbVitTab2)), col=colorRampPalette(c("white", "red", "pink","yellow","lightgreen","green", "darkgreen"))(200), cl.pos = "n", tl.col = "black", tl.srt = 45)
+
+min(nbVitTab)
+max(nbVitTab)

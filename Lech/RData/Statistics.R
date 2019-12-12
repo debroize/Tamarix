@@ -45,16 +45,19 @@ str(tSub@data)
 # Analyse ob sich die Diatanzen der VitTypen unterscheiden ####
 ## Bedingungen Prüfen
 ### Histogramme
+colpal <- c("dodgerblue2", "olivedrab3", "gold2", "brown", "gray50")
+x11()
 par(mfrow= c(2,3))
-hist(tSub@data$Dist, main = "", xlab = "Alle", col = "darkblue", xlim = c(140, 340), breaks = seq(140, 340, by= 20))
-hist(tVit2$Dist, main = "Flussabstand", xlab = "Juvenil", col = "blue", xlim = c(140, 340), breaks = seq(140, 340, by= 20))
-hist(tVit3$Dist, main = "", xlab = "Jung Adult", col = "blue", xlim = c(140, 340), breaks = seq(140, 340, by= 20))
-hist(tVit4$Dist, main = "", xlab = "Adult", col = "blue", xlim = c(140, 340), breaks = seq(140, 340, by= 20))
-hist(tVit5$Dist, main = "", xlab = "Senil", col = "blue", xlim = c(140, 340), breaks = seq(140, 340, by= 20))
-hist(tVit6$Dist, main = "", xlab = "Tot", col = "blue", xlim = c(140, 340), breaks = seq(140, 340, by= 20))
+hist(tSub@data$Dist, main = "", xlab = "Alle", col = "white", xlim = c(120, 350), breaks = seq(140, 340, by= 20), ylab= "Anzahl Tamarisken", cex.lab=1.4)
+hist(tVit2$Dist, main = "Flussabstand", xlab = "Juvenil", col = colpal[1], xlim = c(120, 350), breaks = seq(140, 340, by= 20), ylim= c(0,35), ylab= "Anzahl Tamarisken", cex.lab=1.4, cex.main = 1.4)
+hist(tVit3$Dist, main = "", xlab = "Jung Adult", col = colpal[2], xlim = c(120, 350), breaks = seq(140, 340, by= 20), ylim= c(0,35), ylab= "Anzahl Tamarisken", cex.lab=1.4)
+hist(tVit4$Dist, main = "", xlab = "Adult", col = colpal[3], xlim = c(120, 350), breaks = seq(140, 340, by= 20), ylim= c(0,35), ylab= "Anzahl Tamarisken", cex.lab=1.4)
+hist(tVit5$Dist, main = "", xlab = "Senil", col = colpal[4], xlim = c(120, 350), breaks = seq(140, 340, by= 20), ylim= c(0,35), ylab= "Anzahl Tamarisken", cex.lab=1.4)
+hist(tVit6$Dist, main = "", xlab = "Tot", col = colpal[5], xlim = c(120, 350), breaks = seq(140, 340, by= 20), ylim= c(0,35), ylab= "Anzahl Tamarisken", cex.lab=1.4)
 
 # Boxplot
-boxplot(tSub@data$Dist ~ tSub@data$PNT_VIT, xlab = "Vitalität", main = "Flussabstand")
+par(mfrow= c(1,1))
+boxplot(tSub@data$Dist ~ tSub@data$PNT_VIT, xlab = "Vitalität", main = "", ylab= "Flussabstand")
 
 ### Test auf Normalverteilung
 shapiro.test(tSub@data$Dist) # nicht normalverteilt
@@ -140,7 +143,8 @@ hist(tVit5$DGMmod, main = "", xlab = "Senil", col = "orange", xlim = c(880, 884)
 hist(tVit6$DGMmod, main = "", xlab = "Tot", col = "orange", xlim = c(880, 884), breaks = seq(880, 884, by= 0.5))
 
 # Boxplot
-boxplot(tSub@data$DGMmod ~ tSub@data$PNT_VIT, xlab = "Vitalität", main = "Höhe")
+par(mfrow= c(1,1))
+boxplot(tSub@data$DGMmod ~ tSub@data$PNT_VIT, xlab = "Vitalitätsstadium", main = "Grundwasserabstand", ylab= "Angepasste Geländehöhe", col= colpal)
 
 ### Test auf Normalverteilung
 shapiro.test(tSub@data$DGMmod) # nicht normalverteilt
@@ -237,11 +241,17 @@ boxplot(tSub@data$Dist ~ tSub@data$PNT_VIT, xlab = "Vitalität", ylab = "Flussab
 tSub2 <- tAll
 tSub2@data <- tAll@data[c('NAME', 'VEG_TYPE', 'PNT_VIT', 'AGE_PIN', 'MORPHDYN', 'Trans')]
 
-par(mfrow= c(1,2))
-boxplot(tSub2@data$AGE_PIN ~ tSub2@data$PNT_VIT, xlab = "Vitalität", ylab = "Standortalter", ylim = c(2,20))
+par(mfrow= c(1,1))
+boxplot(tSub2@data$AGE_PIN ~ tSub2@data$PNT_VIT, xlab = "Vitalitätsstadium", ylab = "Kiefernalter", ylim = c(2,20), col= colpal, main= "Standortalter")
+
 VegType_ordered <- factor(tSub2@data$VEG_TYPE, ordered = TRUE, 
                           levels = c("Pionier", "Weidengebüsch", "Erlen-Weidengebüsch", "Grauerlengebüsch", "Kiefern-Erlen-Weidengebüsch", "Erlen-Kiefergebüsch", "Erlenwald", "Kiefergebüsch", "Kiefernwald"))
-boxplot(tSub2@data$PNT_VIT ~ as.numeric(VegType_ordered), xlab = "Vitalität", ylab = "Standorttyp")
+VegType_ordered2 <- VegType_ordered
+VegType_ordered2[VegType_ordered2 =="Kiefern-Erlen-Weidengebüsch"] <- NA
+VegType_ordered2[VegType_ordered2 =="Erlen-Kiefergebüsch"] <- NA
+VegType_ordered2[VegType_ordered2 =="Kiefernwald"] <- NA
+levels(VegType_ordered)
+boxplot(tSub2@data$PNT_VIT ~ as.numeric(VegType_ordered2), ylab = "Vitalität", xlab = "Standorttyp")
 
 
 par(mfrow= c(1,1))

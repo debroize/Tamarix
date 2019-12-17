@@ -1,5 +1,7 @@
 # Nachbarschaftsanalyse ####
 
+require(rgdal)
+
 ### GPS-Punkte mit DGM und Dist
 tAll <- readOGR("./Lech/GPS-Punkte/Mit Attributen/Tam/TamAllDGMDist.shp")
 
@@ -100,3 +102,98 @@ corrplot(as.matrix(as.data.frame(nbVitTab2)), method = "color", cl.lim=c(min(nbV
 
 min(nbVitTab)
 max(nbVitTab)
+
+
+
+
+
+
+
+
+
+
+# Nachbarschaftsanalyse nach Distanz ####
+require(dplyr)
+
+countTam <- function(df, distance){
+  
+  cnt = NULL
+  for(i in 1:276){ 
+  cnt[i] <- sum(df[i,] < distance)
+  
+  }
+ return(cnt)
+}
+
+## Spalten erstellen die Anzahl an Tamarisken in Bestimmten Umkreis wiedergibt
+countTam(df_dismat, 13)
+#df_dismat$SumDist5 <- countTam(df_dismat, 5)
+#df_dismat$SumDist10 <- countTam(df_dismat, 10)
+#df_dismat$SumDist20 <- countTam(df_dismat, 20)
+#df_dismat$SumDist35 <- countTam(df_dismat, 35)
+#df_dismat$SumDist50 <- countTam(df_dismat, 50)
+#df_dismat$SumDist100 <- countTam(df_dismat, 100)
+#df_dismat$SumDist150 <- countTam(df_dismat, 150)
+#df_dismat$SumDist200 <- countTam(df_dismat, 200)
+
+ncol(df_dismat)
+Dist <- c(1:20, 35, 50, 100)
+length(Dist)
+
+for(i in c(Dist)){
+  
+  df_dismat[, (ncol(df_dismat) + 1)] <- countTam(df_dismat, Dist)
+
+ colnames(df_dismat)[ncol(df_dismat)] <- paste0("SumDist", i)
+   
+}
+colnames(df_dismat)
+distCounts <- df_dismat[, -c(1:(ncol(df_dismat) - length(Dist)))]
+#distCounts <- df_dismat[c("SumDist5", "SumDist10", "SumDist20", "SumDist35", "SumDist50", "SumDist100", "SumDist150", "SumDist200")]
+colnames(distCounts)
+
+
+## Datensatz zusammenführen
+tSub@data <- cbind(tSub@data, distCounts)
+
+## Für einzelne Vitalitätstypen Mitteln
+DistTab <- data.frame(matrix(NA, nrow = 5, ncol = 23), row.names = c(2:6))
+Dist <- c(1:20, 35, 50, 100)
+colnames(DistTab) <- Dist
+
+for(VitTyp in 2:6){
+  for(Distanz in 8:30){
+
+  DistTab[VitTyp-1, Distanz - 7] <- mean(tSub@data[tSub@data$PNT_VIT == VitTyp, ][, Distanz])
+  
+  }
+  
+}
+
+
+## Als Raster Plotten
+require(raster)
+summary(DistTab)
+ra.DistTab <- raster(as.matrix(DistTab))
+plot(ra.DistTab, main= "Nachbarschaftsbeziehungen")
+
+
+
+df_distTab <- as.data.frame(DistTab)
+
+
+## "Variogramme" plotten
+#Dist <- c(5, 10, 20, 35, 50, 100, 150, 200)
+DistTab_fin <- cbind(Dist, t(DistTab))
+colnames(DistTab_fin) <- c("Dist", "Juvenil", "Jung_Adult", "Adult", "Senil", "Tot")
+DistTab_fin <- as.data.frame(DistTab_fin)
+pl <- ggplot(DistTab_fin, aes(x= Dist)) + 
+  geom_point(aes(y= Juvenil), col= "blue") + geom_line(aes(y= Juvenil),col="blue") +
+  geom_point(aes(y= Jung_Adult), col= "orange") + geom_line(aes(y= Jung_Adult),col="orange") +
+  geom_point(aes(y= Adult), col= "yellow") + geom_line(aes(y= Adult),col="yellow") + 
+  geom_point(aes(y= Senil), col= "brown") + geom_line(aes(y= Senil),col="brown") +
+  geom_point(aes(y= Tot), col= "gray") + geom_line(aes(y= Tot),col="gray")  
+  
+require(plotly) 
+ggplotly(pl)
+

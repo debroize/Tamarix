@@ -1,10 +1,13 @@
 ### Test
 
-#install.packages("geosphere")
+# install.packages("geosphere")
+# install.packages("pgirmess")
+
 
 require(raster)
 require(rgdal)
 require(geosphere)
+  require(pgirmess)
 
 # Daten einlesen ####
 
@@ -155,7 +158,7 @@ shapiro.test(tSub@data$DGMmod) # nicht normalverteilt
 fligner.test(tSub@data$DGMmod ~ tSub@data$PNT_VIT) # Varianzen sind verschieden
 # keine Unterschiede zu den nicht modifizierten Daten
 
-
+    
 
 # Vergleich der Boxplots von realer und modifizierter Höhe
 par(mfrow= c(1,2))
@@ -192,8 +195,10 @@ KWmod <- kruskal.test(tSub@data$DGMmod ~ factor(tSub@data$PNT_VIT))
 KWorig  
 KWmod 
 # Der Kruskal-Wallis Test ist signifikant, mindestens eine Gruppe unterscheidet sich daher von den anderen durch einen anderen Mittelwert
+kruskalmc(tSub@data$DGMmod~tSub@data$PNT_VIT)
 
-# Paarweiser Wilcox Test um die relationen zwischen den Gruppen zu ermitteln
+
+  # Paarweiser Wilcox Test um die relationen zwischen den Gruppen zu ermitteln
 WTorig <- pairwise.wilcox.test(tSub@data$DGM,factor(tSub@data$PNT_VIT),p.adj='bonferroni',exact=F)
 WTmod <- pairwise.wilcox.test(tSub@data$DGMmod,factor(tSub@data$PNT_VIT),p.adj='bonferroni',exact=F)
 WTorig
@@ -213,16 +218,14 @@ WTmod
 KWdist <- kruskal.test(tSub@data$Dist ~ factor(tSub@data$PNT_VIT))
 KWdist
 # Der Kruskal-Wallis Test ist signifikant, mindestens eine Gruppe unterscheidet sich daher von den anderen durch einen anderen Mittelwert
+kruskalmc(tSub@data$Dist~tSub@data$PNT_VIT)
 
 # Paarweiser Wilcox Test um die relationen zwischen den Gruppen zu ermitteln
-WTdist <- pairwise.wilcox.test(tSub@data$DGM,factor(tSub@data$PNT_VIT),p.adj='bonferroni',exact=F)
+WTdist <- pairwise.wilcox.test(tSub@data$Dist,factor(tSub@data$PNT_VIT),p.adj='bonferroni',exact=F)
 WTdist
 # Im Vergleich zu ANOVA und T-Test kann gezeigt werden, dass andere Gruppenpaare signifikante Unterschiede Zeigen (adult und tot jetzt signifikant verschieden)
-## signifikante Unterschiede in der Flussdistanz-Verteilung zwischen:
-# juvenil (2) und tot (6)
-# jung adult (3) und senil (5)
-# jung adult (3) und tot (6)
-# adult (4) und tot (6)
+## Keine signifikante Unterschiede in der Flussdistanz-Verteilung.
+
   par(mfrow= c(1,1))
 boxplot(tSub@data$Dist ~ tSub@data$PNT_VIT, xlab = "Vitalität", ylab = "Flussabstand")
 
@@ -264,9 +267,11 @@ boxplot(tSub2@data$MORPHDYN ~ tSub2@data$PNT_VIT, xlab = "Vitalität", ylab = "M
 
 # Kruskal-Walis und Wilcox Test für Standortalter
 # Kruskal-Wallis Test (Pendant zu ANOVA wenn keine Varianzengleichheit und Normalverteilung vorliegen)
-KWalt <- kruskal.test(tSub2@data$AGE_PIN ~ factor(tSub2@data$PNT_VIT))
+  KWalt <- kruskal.test(tSub2@data$AGE_PIN ~ factor(tSub2@data$PNT_VIT))
 KWalt
 # Der Kruskal-Wallis Test ist signifikant, mindestens eine Gruppe unterscheidet sich daher von den anderen durch einen anderen Mittelwert
+  kruskalmc(tSub2@data$AGE_PIN~tSub@data$PNT_VIT)
+    
 
 # Paarweiser Wilcox Test um die relationen zwischen den Gruppen zu ermitteln
 WTdist <- pairwise.wilcox.test(tSub2@data$AGE_PIN,factor(tSub2@data$PNT_VIT),p.adj='bonferroni',exact=F)

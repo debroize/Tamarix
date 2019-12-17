@@ -11,7 +11,7 @@ list.files()
 t <- read.csv("Lech/RData/tges.csv", stringsAsFactors = FALSE)
 tAll <- readOGR("Lech/GPS-Punkte/Mit Attributen/Tam/TamAllDGMDist.shp")
 
-
+summary(tAll@data$Dist)
 head(t)
 
 vit_col <- c("dodgerblue2", "olivedrab3", "gold2", "brown", "gray50")
@@ -45,11 +45,11 @@ d <- as.matrix(dist_vit)
 colnames(d) <- c("<175", "175 - 200", "200 - 225", ">225")
 x11()
 o <- barplot(d, ylim = c(0,40), main = "Vitalitätsstadium nach Entfernung zum Fluss", 
-             ylab = "Anzahl Tamarisken", xlab = "Entfernung zum Fluss",col = vit_col, 
+             ylab = "Anzahl Tamarisken", xlab = "Entfernung zum Fluss in [m]",col = vit_col, 
              beside = TRUE, cex.lab = 1.4, cex.main = 1.4)
 legend(0,40,legend= c("Juvenil", "Jung Adult", "Adult", "Senil", "Tot"), fill = vit_col, cex = 1.4)
 
-#text(o, 50,labels= paste("N =" ,b$counts[2:6] ))
+#text(o, 30,labels= paste("N =" ,b$counts[2:6] ))
 
 png("Vitalitätsstadium nach Entfernung zum Fluss.png")
 dev.off()
